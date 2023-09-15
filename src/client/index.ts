@@ -1,6 +1,5 @@
 import { GREEN_CHAIN_ID, GRPC_URL } from '../config/env';
 import { Client } from '@bnb-chain/greenfield-js-sdk';
-console.log(GRPC_URL)
 export const client = Client.create(GRPC_URL, String(GREEN_CHAIN_ID), {
   zkCryptoUrl:
     'https://unpkg.com/@bnb-chain/greenfield-zk-crypto@0.0.3-alpha.0/dist/node/zk-crypto.wasm',
