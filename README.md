@@ -2,6 +2,8 @@
 
 This project was bootstrapped with [`Create React App`](https://github.com/facebook/create-react-app) and [`greenfield-js-sdk`](https://www.npmjs.com/package/@bnb-chain/greenfield-js-sdk).
 
+> [Preview URL](https://codesandbox.io/p/github/rrr523/greenfield-cra-template/main)
+
 
 ## Available Scripts
 
