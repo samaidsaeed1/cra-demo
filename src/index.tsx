@@ -1,3 +1,4 @@
+import { Buffer } from "buffer";
 import { RainbowKitProvider, connectorsForWallets, getDefaultWallets } from '@rainbow-me/rainbowkit';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -5,7 +6,11 @@ import { WagmiConfig, createConfig } from 'wagmi';
 import App from './App';
 import { chains, publicClient, webSocketPublicClient } from './config/wallet';
 import './index.css';
+import '@rainbow-me/rainbowkit/styles.css';
 import reportWebVitals from './reportWebVitals';
+
+// fix global Buffer
+window.Buffer = Buffer
 
 const projectId = '9bf3510aab08be54d5181a126967ee71';
 const { wallets } = getDefaultWallets({
