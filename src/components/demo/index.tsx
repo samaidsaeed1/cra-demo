@@ -1,8 +1,8 @@
-import { ReedSolomon } from '@bnb-chain/reed-solomon';
-import { useState } from 'react';
-import { useAccount } from 'wagmi';
 import { client, selectSp } from '../../client';
 import { getOffchainAuthKeys } from '../../utils/offchainAuth';
+import { Long, OnProgressEvent, VisibilityType } from '@bnb-chain/greenfield-js-sdk';
+import { useState } from 'react';
+import { useAccount } from 'wagmi';
 
 export const Demo = () => {
   const { address, connector } = useAccount();
@@ -15,7 +15,6 @@ export const Demo = () => {
     objectName: '',
     file: null
   });
-  const [txnHash, setTxnHash] = useState('');
 
   return (
     <>
@@ -73,18 +72,10 @@ export const Demo = () => {
                 {
                   bucketName: info.bucketName,
                   creator: address,
-                  visibility: 'VISIBILITY_TYPE_PUBLIC_READ',
-                  chargedReadQuota: '0',
-                  spInfo: {
-                    primarySpAddress: spInfo.primarySpAddress,
-                  },
+                  primarySpAddress: spInfo.primarySpAddress,
+                  visibility: VisibilityType.VISIBILITY_TYPE_PUBLIC_READ,
+                  chargedReadQuota: Long.fromString('0'),
                   paymentAddress: address,
-                },
-                {
-                  type: 'EDDSA',
-                  domain: window.location.origin,
-                  seed: offChainData.seedString,
-                  address,
                 },
               );
 
@@ -114,7 +105,7 @@ export const Demo = () => {
                 alert(JSON.stringify(err))
               }
             }
-            
+
           }}
           >
             Create Bucket Tx
@@ -167,7 +158,7 @@ export const Demo = () => {
           </div>
         </div>
 
-        {/* create object */}
+        {/* upload */}
         <div className="field">
           <button
             className="button is-primary"
@@ -184,46 +175,25 @@ export const Demo = () => {
                 return;
               }
 
-              const rs = new ReedSolomon();
-              const fileBytes = await info.file.arrayBuffer();
-              const expectCheckSums = rs.encode(new Uint8Array(fileBytes));
-
               try {
-                const createObjectTx = await client.object.createObject(
-                  {
-                    bucketName: info.bucketName,
-                    objectName: info.objectName,
-                    creator: address,
-                    visibility: 'VISIBILITY_TYPE_PRIVATE',
-                    fileType: info.file.type,
-                    redundancyType: 'REDUNDANCY_EC_TYPE',
-                    contentLength: fileBytes.byteLength,
-                    expectCheckSums: expectCheckSums,
+                const res = await client.object.delegateUploadObject({
+                  bucketName: info.bucketName,
+                  objectName: info.objectName,
+                  body: info.file,
+                  delegatedOpts: {
+                    visibility: VisibilityType.VISIBILITY_TYPE_PUBLIC_READ,
                   },
-                  {
-                    type: 'EDDSA',
-                    domain: window.location.origin,
-                    seed: offChainData.seedString,
-                    address,
+                  onProgress: (e: OnProgressEvent) => {
+                    console.log('progress: ', e.percent);
                   },
-                );
-
-                const simulateInfo = await createObjectTx.simulate({
-                  denom: 'BNB',
-                });
-
-                console.log('simulateInfo', simulateInfo);
-
-                const res = await createObjectTx.broadcast({
-                  denom: 'BNB',
-                  gasLimit: Number(simulateInfo?.gasLimit),
-                  gasPrice: simulateInfo?.gasPrice || '5000000000',
-                  payer: address,
-                  granter: '',
-                });
+                }, {
+                  type: 'EDDSA',
+                  address: address,
+                  domain: window.location.origin,
+                  seed: offChainData.seedString,
+                })
 
                 if (res.code === 0) {
-                  setTxnHash(res.transactionHash);
                   alert('create object success');
                 }
               } catch (err) {
@@ -237,49 +207,7 @@ export const Demo = () => {
               }
             }}
           >
-            Create Object Tx
-          </button>
-        </div>
-
-        {/* upload */}
-        <div className='field'>
-          <button
-            disabled={txnHash === ''}
-            className="button is-primary"
-            onClick={async () => {
-              if (!address || !info.file) return;
-
-              const spInfo = await selectSp();
-              console.log('spInfo', spInfo);
-
-              const provider = await connector?.getProvider();
-              const offChainData = await getOffchainAuthKeys(address, provider);
-              if (!offChainData) {
-                alert('No offchain, please create offchain pairs first');
-                return;
-              }
-
-              const uploadRes = await client.object.uploadObject(
-                {
-                  bucketName: info.bucketName,
-                  objectName: info.objectName,
-                  body: info.file,
-                  txnHash: txnHash,
-                },
-                {
-                  type: 'EDDSA',
-                  domain: window.location.origin,
-                  seed: offChainData.seedString,
-                  address,
-                },
-              );
-
-              if (uploadRes.code === 0) {
-                alert('success');
-              }
-            }}
-          >
-            Upload
+            Delegrate Upload
           </button>
         </div>
 

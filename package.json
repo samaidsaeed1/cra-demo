@@ -4,8 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "^7.16.0",
-    "@bnb-chain/greenfield-js-sdk": "latest",
-    "@bnb-chain/reed-solomon": "^1.1.2",
+    "@bnb-chain/greenfield-js-sdk": "^2.0.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@rainbow-me/rainbowkit": "^1.0.11",
     "@svgr/webpack": "^5.5.0",
