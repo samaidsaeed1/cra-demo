@@ -1,8 +1,8 @@
 # Greenfield Create React App Template
 
-This project was bootstrapped with [`Create React App`](https://github.com/facebook/create-react-app) and [`greenfield-js-sdk`](https://www.npmjs.com/package/@bnb-chain/greenfield-js-sdk).
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/rrr523/greenfield-cra-template)
 
-> [Preview URL](https://codesandbox.io/p/github/rrr523/greenfield-cra-template/main)
+This project was bootstrapped with [`Create React App`](https://github.com/facebook/create-react-app) and [`greenfield-js-sdk`](https://www.npmjs.com/package/@bnb-chain/greenfield-js-sdk).
 
 
 ## Available Scripts
