@@ -1,6 +1,6 @@
 # Greenfield Create React App Template
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/rrr523/greenfield-cra-template)
+[![Edit in CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://stackblitz.com/github/rrr523/greenfield-cra-template/main)
 
 This project was bootstrapped with [`Create React App`](https://github.com/facebook/create-react-app) and [`greenfield-js-sdk`](https://www.npmjs.com/package/@bnb-chain/greenfield-js-sdk).
 
