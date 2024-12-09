@@ -2,12 +2,15 @@ import { Buffer } from "buffer";
 import { RainbowKitProvider, connectorsForWallets, getDefaultWallets } from '@rainbow-me/rainbowkit';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Route, Routes } from 'react-router'
 import { WagmiConfig, createConfig } from 'wagmi';
 import App from './App';
 import { chains, publicClient, webSocketPublicClient } from './config/wallet';
 import './index.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
 // fix global Buffer
 window.Buffer = Buffer
@@ -37,7 +40,13 @@ root.render(
   <React.StrictMode>
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider modalSize="compact" chains={chains}>
-        <App />
+        <Provider store={store}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<App />}/>
+            </Routes>
+          </BrowserRouter>
+        </Provider>
       </RainbowKitProvider>
     </WagmiConfig>
   </React.StrictMode>
