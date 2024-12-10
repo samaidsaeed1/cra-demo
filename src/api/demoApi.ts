@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { Trial } from '../models/trials';
 
 export const demoApi = createApi({
     reducerPath: 'demoApi',
@@ -7,12 +8,12 @@ export const demoApi = createApi({
         prepareHeaders: (headers) => headers
     }),
     endpoints: (builder) => ({
-        getData: builder.query<void, void>({
+        getTrial: builder.query<{trials: Trial[]}, void>({
             query: () => ({
-                url: ''
-            })
+                url: '/posts'
+            }),
         })
     })
 });
 
-export const {useGetDataQuery} = demoApi;
+export const {useGetTrialQuery} = demoApi;

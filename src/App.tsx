@@ -1,17 +1,9 @@
-import { useAccount } from 'wagmi';
 import './App.css';
-import { Demo } from './components/demo';
-import { Wallet } from './components/wallet';
+import { Trials } from './components/trials';
 
 function App() {
-  const {isConnected} = useAccount()
   return (
-    <div className="App">
-      <header className="App-header">
-        <Wallet />
-        {isConnected && <Demo /> }
-      </header>
-    </div>
+    <Trials />
   );
 }
 
